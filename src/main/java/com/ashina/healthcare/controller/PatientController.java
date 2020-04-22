@@ -2,8 +2,10 @@ package com.ashina.healthcare.controller;
 
 import com.ashina.healthcare.entity.CheckUpForm;
 import com.ashina.healthcare.entity.Patient;
+import com.ashina.healthcare.entity.Prescription;
 import com.ashina.healthcare.service.CheckUpFormService;
 import com.ashina.healthcare.service.PatientService;
+import com.ashina.healthcare.service.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,8 @@ public class PatientController {
     private PatientService patientService;
     @Autowired
     private CheckUpFormService checkUpFormService;
+    @Autowired
+    private PrescriptionService prescriptionService;
 
     @GetMapping("/patient")
     public List<Patient> getAllPatient() {
@@ -35,5 +39,13 @@ public class PatientController {
         if (matchedPatient == null) return ResponseEntity.notFound().build();
         List<CheckUpForm> checkUpFormList = checkUpFormService.findAllByPatient(matchedPatient.getPatientID());
         return ResponseEntity.ok().body(checkUpFormList);
+    }
+
+    @GetMapping("/patient/{id}/prescription")
+    public ResponseEntity<Object> getAllPresciptionByPatient(@PathVariable("id") Long patient) {
+        Patient matchedPatient = patientService.findFirstByPatientID(patient);
+        if (matchedPatient == null) return ResponseEntity.notFound().build();
+        List<Prescription> presciptionList = prescriptionService.findAllByPatient(matchedPatient.getPatientID());
+        return ResponseEntity.ok().body(presciptionList);
     }
 }

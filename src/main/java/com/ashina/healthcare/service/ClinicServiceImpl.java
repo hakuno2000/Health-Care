@@ -15,4 +15,9 @@ public class ClinicServiceImpl implements ClinicService{
     public List<Clinic> findAll() {
         return clinicRepo.findAll();
     }
+
+    @Override
+    public List<Clinic> findAllByClinicNameContaining(String clinicName) {
+        return clinicRepo.findAllByClinicNameContaining(clinicName);
+    }
 }

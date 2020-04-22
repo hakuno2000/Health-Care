@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface ClinicRepo extends JpaRepository<Clinic, Long> {
     List<Clinic> findAll();
+    List<Clinic> findAllByClinicNameContaining(String clinicName);
 }
