@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Getter @Setter
 @Entity
 @Table(name = "clinics")
-public class clinic {
+public class Clinic {
     @Id
     @Column(name = "clinicID", nullable = false)
     private Long clinicID;
