@@ -16,6 +16,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findFirstByEmail(String email) {
+        return userRepo.findFirstByEmail(email);
+    }
+
+    @Override
     public void save(User user) {
         userRepo.save(user);
     }

@@ -8,13 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8080")
 public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/api")
+    @RequestMapping("/api/login")
     public ResponseEntity<Object> login(@RequestBody User userInput) {
-        User matchedUser = userService.findFirstByUserName(userInput.getUserName());
+        User matchedUser = userService.findFirstByEmail(userInput.getEmail());
         if (matchedUser == null) return ResponseEntity.notFound().build();
         if (!matchedUser.getUserPassword().equals(userInput.getUserPassword())) return ResponseEntity.badRequest().body(new ResponeMessage("Password không khớp"));
         return ResponseEntity.ok().body(matchedUser);
