@@ -3,6 +3,7 @@ package com.ashina.healthcare.controller;
 import com.ashina.healthcare.support.ResponeMessage;
 import com.ashina.healthcare.entity.User;
 import com.ashina.healthcare.service.UserService;
+import com.ashina.healthcare.support.ResponeData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,15 +19,20 @@ public class UserController {
         User matchedUser = userService.findFirstByEmail(userInput.getEmail());
         if (matchedUser == null) return ResponseEntity.notFound().build();
         if (!matchedUser.getUserPassword().equals(userInput.getUserPassword())) return ResponseEntity.badRequest().body(new ResponeMessage("Password không khớp"));
-        return ResponseEntity.ok().body(matchedUser);
+        ResponeData responeData = new ResponeData();
+        if (matchedUser.getUserID() < 10000000) responeData.setRole("doctor");
+        return ResponseEntity.ok().body(responeData);
     }
 
-    @PostMapping("/user/create")
-    public ResponseEntity<ResponeMessage> createNewUser(@RequestBody User newUser) {
+    @RequestMapping("/api/signup")
+    public ResponseEntity<Object> createNewUser(@RequestBody User newUser) {
         User matchedUser = userService.findFirstByUserName(newUser.getUserName());
         if (matchedUser == null) {
+            User currentTopId = userService.findTopByOrderByUserIDDesc();
+            newUser.setUserID(currentTopId.getUserID() + 1);
             userService.save(newUser);
-            return ResponseEntity.ok().body(new ResponeMessage("Tạo thành công User mới"));
+            ResponeData responeData = new ResponeData();
+            return ResponseEntity.ok().body(responeData);
         } else return ResponseEntity.badRequest().body(new ResponeMessage("User này đã tồn tại"));
     }
 

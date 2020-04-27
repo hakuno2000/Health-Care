@@ -21,6 +21,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findTopByOrderByUserIDDesc() {
+        return userRepo.findTopByOrderByUserIDDesc();
+    }
+
+    @Override
     public void save(User user) {
         userRepo.save(user);
     }
