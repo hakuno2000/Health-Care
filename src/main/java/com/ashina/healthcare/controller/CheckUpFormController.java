@@ -35,7 +35,12 @@ public class CheckUpFormController {
     }
 
     @PostMapping("/api/form")
-    public ResponseEntity<Object> saveCheckUpForm(@RequestBody CheckUpForm checkUpForm) {
+    public ResponseEntity<Object> saveCheckUpForm(@RequestHeader(value = "Authorization") String authorization, @RequestBody CheckUpForm checkUpForm) {
+        Long patient = Long.parseLong(authorization.split(" ")[1]);
+        User matchedUser = userService.findByUserID(patient);
+        if (matchedUser == null) return ResponseEntity.badRequest().build();
+
+        checkUpForm.setPatient(patient);
         checkUpForm.setFormID(checkUpFormService.findTopByOrderByFormIDDesc().getFormID() + 1);
         checkUpForm.setResolved(null);
         checkUpFormService.save(checkUpForm);

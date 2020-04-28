@@ -8,6 +8,6 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter @Setter
-public class ResponseResult {
+public class UserResult {
     private List<User> result;
 }

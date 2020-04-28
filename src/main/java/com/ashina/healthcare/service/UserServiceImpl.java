@@ -38,6 +38,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findPatientByEmailContaining(String email) {
+        return userRepo.findPatientByEmailContaining(email);
+    }
+
+    @Override
     public void save(User user) {
         userRepo.save(user);
     }

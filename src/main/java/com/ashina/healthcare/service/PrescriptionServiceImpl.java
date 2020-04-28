@@ -15,4 +15,14 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     public List<Prescription> findAllByPatient(Long patient) {
         return prescriptionRepo.findAllByPatient(patient);
     }
+
+    @Override
+    public Prescription findTopByOrderByPresciptionIDDesc() {
+        return prescriptionRepo.findTopByOrderByPresciptionIDDesc();
+    }
+
+    @Override
+    public void save(Prescription prescription) {
+        prescriptionRepo.save(prescription);
+    }
 }

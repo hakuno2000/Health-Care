@@ -10,6 +10,7 @@ public interface UserService {
     User findTopByOrderByUserIDDesc();
     User findByUserID(Long userID);
     List<User> findByEmailContaining(String email);
+    List<User> findPatientByEmailContaining(String email);
     void save(User user);
     void delete(User user);
 }

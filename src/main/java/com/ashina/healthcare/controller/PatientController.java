@@ -1,15 +1,10 @@
 package com.ashina.healthcare.controller;
 
-import com.ashina.healthcare.entity.CheckUpForm;
-import com.ashina.healthcare.entity.Patient;
-import com.ashina.healthcare.entity.Prescription;
-import com.ashina.healthcare.entity.User;
-import com.ashina.healthcare.service.CheckUpFormService;
-import com.ashina.healthcare.service.PatientService;
-import com.ashina.healthcare.service.PrescriptionService;
-import com.ashina.healthcare.service.UserService;
-import com.ashina.healthcare.support.ResponseInfo;
-import com.ashina.healthcare.support.ResponseResult;
+import com.ashina.healthcare.entity.*;
+import com.ashina.healthcare.service.*;
+import com.ashina.healthcare.support.CheckUpFormResult;
+import com.ashina.healthcare.support.ClinicResult;
+import com.ashina.healthcare.support.UserResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +22,8 @@ public class PatientController {
     private PrescriptionService prescriptionService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ClinicService clinicService;
 
     @GetMapping("/patient")
     public List<Patient> getAllPatient() {
@@ -57,14 +54,26 @@ public class PatientController {
     }
 
     @RequestMapping("/api/search")
-    public ResponseEntity<Object> findPatientByUserNameContaining(@RequestParam("search") String search, @RequestParam("data") String email) {
-        /*List<Patient> patients = patientService.findByUserNameContaining(userName);
-        ResponseResult responseResult = new ResponseResult();
-        responseResult.setResult(patients);
-        return ResponseEntity.ok().body(responseResult);*/
-        List<User> users = userService.findByEmailContaining(email);
-        ResponseResult responseResult = new ResponseResult();
-        responseResult.setResult(users);
-        return ResponseEntity.ok().body(responseResult);
+    public ResponseEntity<Object> findPatientByUserNameContaining(@RequestHeader(value = "Authorization") String authorization, @RequestParam("search") String search, @RequestParam("data") String data) {
+        if (search.equals("patient")) {
+            List<User> users = userService.findPatientByEmailContaining(data);
+            UserResult userResult = new UserResult();
+            userResult.setResult(users);
+            return ResponseEntity.ok().body(userResult);
+        } else if (search.equals("clinic")) {
+            List<Clinic> clinics = clinicService.findAllByClinicNameContaining(data);
+            ClinicResult clinicResult = new ClinicResult();
+            clinicResult.setResult(clinics);
+            return ResponseEntity.ok().body(clinicResult);
+        } else {
+            Long patient = Long.parseLong(authorization.split(" ")[1]);
+            User matchedUser = userService.findByUserID(patient);
+            if (matchedUser == null) return ResponseEntity.badRequest().build();
+
+            List<CheckUpForm> checkUpForms = checkUpFormService.findAllByPatient(patient);
+            CheckUpFormResult checkUpFormResult = new CheckUpFormResult();
+            checkUpFormResult.setResult(checkUpForms);
+            return ResponseEntity.ok().body(checkUpFormResult);
+        }
     }
 }
