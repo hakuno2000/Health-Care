@@ -23,6 +23,11 @@ public class PatientServiceImpl implements PatientService{
     }
 
     @Override
+    public List<Patient> findByUserNameContaining(String userName) {
+        return patientRepo.findByUserNameContaining(userName);
+    }
+
+    @Override
     public void save(Patient patient) {
         patientRepo.save(patient);
     }

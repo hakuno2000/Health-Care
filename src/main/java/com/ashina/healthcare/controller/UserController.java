@@ -1,9 +1,9 @@
 package com.ashina.healthcare.controller;
 
-import com.ashina.healthcare.support.ResponeMessage;
+import com.ashina.healthcare.support.ResponseMessage;
 import com.ashina.healthcare.entity.User;
 import com.ashina.healthcare.service.UserService;
-import com.ashina.healthcare.support.ResponeData;
+import com.ashina.healthcare.support.ResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +18,11 @@ public class UserController {
     public ResponseEntity<Object> login(@RequestBody User userInput) {
         User matchedUser = userService.findFirstByEmail(userInput.getEmail());
         if (matchedUser == null) return ResponseEntity.notFound().build();
-        if (!matchedUser.getUserPassword().equals(userInput.getUserPassword())) return ResponseEntity.badRequest().body(new ResponeMessage("Password không khớp"));
-        ResponeData responeData = new ResponeData();
-        if (matchedUser.getUserID() < 10000000) responeData.setRole("doctor");
-        return ResponseEntity.ok().body(responeData);
+        if (!matchedUser.getUserPassword().equals(userInput.getUserPassword())) return ResponseEntity.badRequest().body(new ResponseMessage("Password không khớp"));
+        ResponseInfo responseInfo = new ResponseInfo();
+        responseInfo.setToken(matchedUser.getUserID().toString());
+        if (matchedUser.getUserID() < 10000000) responseInfo.setRole("doctor");
+        return ResponseEntity.ok().body(responseInfo);
     }
 
     @RequestMapping("/api/signup")
@@ -31,9 +32,10 @@ public class UserController {
             User currentTopId = userService.findTopByOrderByUserIDDesc();
             newUser.setUserID(currentTopId.getUserID() + 1);
             userService.save(newUser);
-            ResponeData responeData = new ResponeData();
-            return ResponseEntity.ok().body(responeData);
-        } else return ResponseEntity.badRequest().body(new ResponeMessage("User này đã tồn tại"));
+            ResponseInfo responseInfo = new ResponseInfo();
+            responseInfo.setToken(newUser.getUserID().toString());
+            return ResponseEntity.ok().body(responseInfo);
+        } else return ResponseEntity.badRequest().body(new ResponseMessage("User này đã tồn tại"));
     }
 
     /*@DeleteMapping("/user/delete")

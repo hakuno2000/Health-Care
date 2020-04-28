@@ -5,6 +5,8 @@ import com.ashina.healthcare.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -23,6 +25,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findTopByOrderByUserIDDesc() {
         return userRepo.findTopByOrderByUserIDDesc();
+    }
+
+    @Override
+    public User findByUserID(Long userID) {
+        return userRepo.findByUserID(userID);
+    }
+
+    @Override
+    public List<User> findByEmailContaining(String email) {
+        return userRepo.findByEmailContaining(email);
     }
 
     @Override

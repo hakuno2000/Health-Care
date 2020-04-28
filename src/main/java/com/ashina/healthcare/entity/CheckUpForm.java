@@ -3,10 +3,7 @@ package com.ashina.healthcare.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Getter @Setter
@@ -30,5 +27,8 @@ public class CheckUpForm {
     private String description;
 
     @Column(name = "resolved")
-    private boolean resolved;
+    private Boolean resolved;
+
+    /*@OneToOne(mappedBy = "checkUpForm")
+    private Prescription prescription;*/
 }

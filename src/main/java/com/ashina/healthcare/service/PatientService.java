@@ -7,6 +7,7 @@ import java.util.List;
 public interface PatientService {
     List<Patient> findAll();
     Patient findFirstByPatientID(Long id);
+    List<Patient> findByUserNameContaining(String userName);
     void save(Patient patient);
     void delete(Patient patient);
 }

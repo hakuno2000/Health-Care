@@ -3,10 +3,7 @@ package com.ashina.healthcare.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Getter @Setter
@@ -19,6 +16,9 @@ public class Prescription {
 
     @Column(name = "checkUpForm", nullable = false)
     private Long checkUpForm;
+    /*@OneToOne
+    @JoinColumn(name = "checkUpForm", referencedColumnName = "formID")
+    private CheckUpForm checkUpForm;*/
 
     @Column(name = "doctor", nullable = false)
     private Long doctor;

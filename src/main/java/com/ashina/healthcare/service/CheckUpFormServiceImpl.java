@@ -18,6 +18,21 @@ public class CheckUpFormServiceImpl implements CheckUpFormService{
     }
 
     @Override
+    public List<CheckUpForm> findAllByDoctor(Long doctor) {
+        return checkUpFormRepo.findAllByDoctor(doctor);
+    }
+
+    @Override
+    public void updateCheckUpFormResolvedByFormID(Long formID, Boolean resolved) {
+        checkUpFormRepo.updateCheckUpFormResolvedByFormID(formID, resolved);
+    }
+
+    @Override
+    public CheckUpForm findTopByOrderByFormIDDesc() {
+        return checkUpFormRepo.findTopByOrderByFormIDDesc();
+    }
+
+    @Override
     public void save(CheckUpForm checkUpForm) {
         checkUpFormRepo.save(checkUpForm);
     }
