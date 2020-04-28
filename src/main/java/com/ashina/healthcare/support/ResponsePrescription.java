@@ -8,5 +8,5 @@ import java.util.List;
 
 @Getter @Setter
 public class ResponsePrescription {
-    List<Prescription> prescription;
+    List<Prescription> forms;
 }

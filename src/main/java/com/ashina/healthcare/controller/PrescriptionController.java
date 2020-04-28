@@ -42,7 +42,7 @@ public class PrescriptionController {
 
         List<Prescription> prescriptions = prescriptionService.findAllByPatient(patient);
         ResponsePrescription responsePrescription = new ResponsePrescription();
-        responsePrescription.setPrescription(prescriptions);
+        responsePrescription.setForms(prescriptions);
         return ResponseEntity.ok().body(responsePrescription);
     }
 }
