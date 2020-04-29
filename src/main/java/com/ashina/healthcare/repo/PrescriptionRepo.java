@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface PrescriptionRepo extends JpaRepository<Prescription, Long> {
-    @Query(value = "SELECT p.* FROM checkupform c JOIN prescription p ON c.formID = p.checkUpForm WHERE c.patient = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM checkupform c JOIN prescription p ON c.formID = p.checkUpForm WHERE c.patient = ?1", nativeQuery = true)
     List<Prescription> findAllByPatient(Long patient);
 
     Prescription findTopByOrderByPresciptionIDDesc();

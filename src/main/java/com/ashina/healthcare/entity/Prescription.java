@@ -34,4 +34,13 @@ public class Prescription {
 
     @Column(name = "reExaminationTime")
     private Date reExaminationTime;
+
+//    @Transient
+    private Date checkUpDate;
+
+//    @Transient
+    private String description;
+
+//    @Transient
+    private Long clinic;
 }
